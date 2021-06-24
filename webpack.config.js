@@ -49,6 +49,7 @@ module.exports = (_, argv) => ({
       exposes: {
         "./Header": "./src/Header",
         "./DataTable": "./src/DataTable",
+        "./Styles": "./src/Styles"
       },
       shared: { react: { singleton: true }, "react-dom": { singleton: true }, "react-table": { singleton: true} }, // share the same version of react and react-dom
     }),
