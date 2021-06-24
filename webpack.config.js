@@ -51,6 +51,15 @@ module.exports = (_, argv) => ({
       },
       shared: { react: { singleton: true }, "react-dom": { singleton: true } }, // share the same version of react and react-dom
     }),
+    new ModuleFederationPlugin({
+      name: "table",
+      filename: "remoteEntry.js",
+      remotes: {},
+      exposes: {
+        "./DataTable": "./src/DataTable",
+      },
+      shared: { react: { singleton: true }, "react-dom": { singleton: true }, "react-table": { singleton: true} }, // share the same version of react and react-dom
+    }),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
     }),
