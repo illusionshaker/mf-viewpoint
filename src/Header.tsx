@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+export default ({widgetName}) => (
   <div
     style={{
       padding: "1em",
@@ -10,6 +10,6 @@ export default () => (
       fontWeight: "bold",
     }}
   >
-    Header 1.0
+    {widgetName}
   </div>
 );

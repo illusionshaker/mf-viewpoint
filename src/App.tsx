@@ -1,13 +1,9 @@
 import React from "react";
-import Styles from './Styles';
-import Header from "./Header";
-import Table from "./DataTable";
+import MicroFrontend from "./MicroFrontend";
 import "./index.scss";
 
-
 const App = () => {
-const columns = React.useMemo(
-  () => [
+const columns = [
     {
       Header: 'Name',
       columns: [
@@ -41,12 +37,9 @@ const columns = React.useMemo(
           accessor: 'progress',
         },
       ],
-    },
-  ],
-  []
-)
+    }
+]
 
-// const data = React.useMemo(() => makeData(20), [])
 const data = [{
   firstName: "Sam",
   lastName: "Face",
@@ -57,14 +50,7 @@ const data = [{
 }]
 
 return (
-  
-  <Styles>
-    <div>
-    <Header />
-    <div>I'm the header app</div>
-  </div>
-    <Table columns={columns} data={data} />
-  </Styles>
+  <MicroFrontend widgetName = {"Person"} columns={columns} data={data}/>
 )
 }
 
