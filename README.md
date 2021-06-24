@@ -1,3 +1,3 @@
-# Header Component
+# ViewPoint Micro Frontend Hack
 
-Webpack module federation - expose Header component for other apps to use
+Webpack module federation - ViewPoint Micro Frontend Hack Project

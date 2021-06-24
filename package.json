@@ -1,7 +1,7 @@
 {
-  "name": "mf-header",
+  "name": "mf-viewpoint",
   "version": "1.0.0",
-  "description": "Module Federation Header",
+  "description": "ViewPoint Micro Frontend Hack Day",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/illusionshaker/mf-header.git"
+    "url": "git+https://github.com/illusionshaker/mf-viewpoint.git"
   },
   "author": "Mathew Ng",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/illusionshaker/mf-header/issues"
+    "url": "https://github.com/illusionshaker/mf-viewpoint/issues"
   },
-  "homepage": "https://github.com/illusionshaker/mf-header#readme",
+  "homepage": "https://github.com/illusionshaker/mf-viewpoint#readme",
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
