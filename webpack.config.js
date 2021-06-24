@@ -43,19 +43,11 @@ module.exports = (_, argv) => ({
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "header",
-      filename: "remoteEntry.js",
-      remotes: {},
-      exposes: {
-        "./Header": "./src/Header",
-      },
-      shared: { react: { singleton: true }, "react-dom": { singleton: true } }, // share the same version of react and react-dom
-    }),
-    new ModuleFederationPlugin({
       name: "table",
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
+        "./Header": "./src/Header",
         "./DataTable": "./src/DataTable",
       },
       shared: { react: { singleton: true }, "react-dom": { singleton: true }, "react-table": { singleton: true} }, // share the same version of react and react-dom
