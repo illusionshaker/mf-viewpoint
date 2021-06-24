@@ -6,7 +6,7 @@ module.exports = (_, argv) => ({
     publicPath:
       argv.mode === "development"
         ? "http://localhost:9000/"
-        : "https://mf-header.vercel.app/",
+        : "https://mf-viewpoint.vercel.app/",
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".json"],
