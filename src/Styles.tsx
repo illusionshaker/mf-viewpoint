@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 const Styles = styled.div`
-  padding: 1rem;
+  padding: 2rem;
 
   table {
     border-spacing: 0;
-    border: 1px solid black;
+    border: 3px solid gray;
 
     tr {
       :last-child {
@@ -19,8 +19,8 @@ const Styles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+      border-bottom: 1.5px solid gray;
+      border-right: 1.5px solid gray;
 
       :last-child {
         border-right: 0;

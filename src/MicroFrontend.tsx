@@ -39,6 +39,12 @@ function MicroFrontend ({ widgetName, columns, data }) {
       created: "2021-06-11 10:25:02",
       orderNum: 123456,
       status:'created'
+    },
+    {
+        accountName: "testing@iress",
+        created: "2021-06-22 08:15:02",
+        orderNum: 1000122,
+        status:'fully filled'
     }]
 
     return (
