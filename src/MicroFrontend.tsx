@@ -16,4 +16,3 @@ function MicroFrontend ({ widgetName, columns, data }) {
 }
 
 export default MicroFrontend;
-    

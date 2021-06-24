@@ -43,13 +43,13 @@ module.exports = (_, argv) => ({
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "microfrontend",
+      name: "microFrontend",
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
         "./MicroFrontend": "./src/MicroFrontend",
       },
-      shared: { react: { singleton: true }, "react-dom": { singleton: true }, "react-table": { singleton: true} }, // share the same version of react and react-dom
+      shared: { react: { singleton: true }, "react-dom": { singleton: true } }, // share the same version of react and react-dom
     }),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
