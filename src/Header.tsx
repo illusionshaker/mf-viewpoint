@@ -5,7 +5,7 @@ export default ({widgetName}) => (
     style={{
       padding: "1em",
       margin: "1em",
-      background: "blue",
+      background: "green",
       color: "white",
       fontWeight: "bold",
     }}
