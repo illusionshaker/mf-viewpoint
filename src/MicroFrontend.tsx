@@ -7,12 +7,13 @@ import "./index.scss";
 export interface IMicroFrontendProps {
   locale: string,
   broadcastPayload: any,
+  elemSelector: string,
 }
 
 const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   props: IMicroFrontendProps
 ) => {
-  const { locale, broadcastPayload } = props;
+  const { locale, broadcastPayload, elemSelector } = props;
   const [ currentBroadcastPayload, setCurrentBroadcastPayload] = useState(broadcastPayload);
   const [ security, setSecurity ] = useState("");
   
@@ -41,13 +42,25 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
   const handleSubmit = (event: React.SyntheticEvent): void => {
     event.preventDefault();
-    console.log("we need to do something here...", currentBroadcastPayload);
+    const elem = document.querySelector("#app");
+    if(elem) {
+      elem.dispatchEvent(
+        new CustomEvent("mf-broadcast-send", {
+            detail: {
+                elemSelector: `${elemSelector}`, // element we want target
+                payload: currentBroadcastPayload, // broadcast payload
+            },
+        }),
+      );
+
+      console.log("we need to do something here...", currentBroadcastPayload);
+    }
   }
 
   useEffect(() => {
     // Update the document title using the browser API
     setSecurity(currentSecurity());
-  }, [currentBroadcastPayload]);
+  }, [security, currentBroadcastPayload]);
 
   return (
     <>
