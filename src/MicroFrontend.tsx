@@ -1,8 +1,4 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
-import Styles from './Styles';
-import Header from "./Header";
-import Table from "./DataTable";
-import "./index.scss";
 
 export interface IMicroFrontendProps {
   locale: string,
@@ -58,7 +54,6 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   }
 
   useEffect(() => {
-    // Update the document title using the browser API
     setSecurity(currentSecurity());
   }, [security, currentBroadcastPayload]);
 
