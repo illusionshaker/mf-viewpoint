@@ -14,13 +14,20 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 ) => {
   const { locale, broadcastPayload } = props;
   const [ currentBroadcastPayload, setCurrentBroadcastPayload] = useState(broadcastPayload);
+  const [ security, setSecurity ] = useState("");
 
   const localise = (localizationKey: string): string => {
     return global?.IressTraderPlus?.UICore?.CultureInfo?.localize ? global.IressTraderPlus.UICore.CultureInfo.localize(localizationKey): localizationKey;
   };
 
   const handleBroadcastPaylodChange = (event: React.SyntheticEvent): void => {
-    setCurrentBroadcastPayload(JSON.parse(event.target.value));
+    const securities = [
+      event.target.value
+    ];
+    setSecurity(event.target.value);
+    const updatedBroadcastPayload = currentBroadcastPayload;
+    updatedBroadcastPayload.securities = securities;
+    setCurrentBroadcastPayload(updatedBroadcastPayload);
   }
 
   const handleSubmit = (event: React.SyntheticEvent): void => {
@@ -38,16 +45,12 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       <form onSubmit={handleSubmit}>
         <label>Broadcast Payload:</label>
         <br />
-        <textarea 
-          value={JSON.stringify(currentBroadcastPayload)} 
-          onChange={handleBroadcastPaylodChange} 
-          style={
-            {
-              width: "100%",
-              height: "10%"
-            }
-          } 
-        />
+        <select value={security} onChange={handleBroadcastPaylodChange}>
+          <option>Select...</option>
+          <option value="ANZ.ASX">ANZ.ASX</option>
+          <option value="BHP.ASX">BHP.ASX</option>
+          <option value="NAB.ASX">NAB.ASX</option>
+        </select>
         <br />
         <input type="submit" value="Submit" />
       </form>
