@@ -67,14 +67,14 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       <form onSubmit={handleSubmit}>
         <label>Broadcast Payload:</label>
         <br />
-        <select value={security} onChange={handleBroadcastPaylodChange}>
+        <select value={security} onChange={handleBroadcastPaylodChange} className="form-control">
           <option>Select...</option>
           <option value="ANZ.ASX">ANZ.ASX</option>
           <option value="BHP.ASX">BHP.ASX</option>
           <option value="NAB.ASX">NAB.ASX</option>
         </select>
         <br />
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit" className="form-control" />
       </form>
     </>
   );
