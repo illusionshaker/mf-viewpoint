@@ -14,14 +14,17 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 ) => {
   const { locale, broadcastPayload } = props;
   const [ currentBroadcastPayload, setCurrentBroadcastPayload] = useState(broadcastPayload);
+  const [ security, setSecurity ] = useState("");
   
   // just use the first security for the time being as our POC
-  let currentSecurity: string = "";
-  if(broadcastPayload && broadcastPayload.securities && broadcastPayload.securities.length > 0) {
-    currentSecurity = broadcastPayload.securities[0];
-  }
-  const [ security, setSecurity ] = useState(currentSecurity);
-
+  const currentSecurity = () => {
+    let currentSecurity: string = "";
+    if(broadcastPayload && broadcastPayload.securities && broadcastPayload.securities.length > 0) {
+      currentSecurity =  broadcastPayload.securities[0];
+    }
+    return currentSecurity;
+  };
+  
   const localise = (localizationKey: string): string => {
     return global?.IressTraderPlus?.UICore?.CultureInfo?.localize ? global.IressTraderPlus.UICore.CultureInfo.localize(localizationKey): localizationKey;
   };
@@ -40,6 +43,10 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
     event.preventDefault();
     console.log("we need to do something here...", currentBroadcastPayload);
   }
+
+  useEffect(() => {
+    // update
+  });
 
   return (
     <>
