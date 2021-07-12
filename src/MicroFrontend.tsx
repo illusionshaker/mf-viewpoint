@@ -45,7 +45,8 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   }
 
   useEffect(() => {
-    // update
+    // Update the document title using the browser API
+    setSecurity(currentSecurity());
   });
 
   return (
