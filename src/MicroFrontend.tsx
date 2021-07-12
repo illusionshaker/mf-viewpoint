@@ -19,8 +19,8 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   // just use the first security for the time being as our POC
   const currentSecurity = () => {
     let currentSecurity: string = "";
-    if(broadcastPayload && broadcastPayload.securities && broadcastPayload.securities.length > 0) {
-      currentSecurity =  broadcastPayload.securities[0];
+    if(currentBroadcastPayload && currentBroadcastPayload.securities && currentBroadcastPayload.securities.length > 0) {
+      currentSecurity =  currentBroadcastPayload.securities[0];
     }
     return currentSecurity;
   };
@@ -47,7 +47,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   useEffect(() => {
     // Update the document title using the browser API
     setSecurity(currentSecurity());
-  }, [security]);
+  }, [currentBroadcastPayload]);
 
   return (
     <>
