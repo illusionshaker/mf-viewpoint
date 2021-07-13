@@ -10,7 +10,7 @@ const App = () => {
   const [count, setCount] = React.useState(0);
 
   const handleBroadcastReceived = (event: CustomEvent) => {
-    // document.querySelector("#app").dispatchEvent(new CustomEvent("mf-broadcast-received", {detail: {payload: {securityCodes: ["NAB.ASX"]}}}));
+    // document.querySelector("#app").dispatchEvent(new CustomEvent("mf-broadcast-received", {detail: {payload: {securities: ["NAB.ASX"]}}}));
     setPayload(event.detail.payload);
     setCount(count + 1);
   };

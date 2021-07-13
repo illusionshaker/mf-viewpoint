@@ -15,16 +15,16 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   // just use the first security for the time being as our POC
   const currentSecurity = () => {
     let currentSecurity: string = "";
-    if(currentBroadcastPayload && currentBroadcastPayload.securityCodes && currentBroadcastPayload.securityCodes.length > 0) {
-      currentSecurity = currentBroadcastPayload.securityCodes[0];
+    if(currentBroadcastPayload && currentBroadcastPayload.securities && currentBroadcastPayload.securities.length > 0) {
+      currentSecurity = currentBroadcastPayload.securities[0];
     }
     return currentSecurity;
   };
 
   const broadcastSecurity = () => {
     let currentSecurity: string = "";
-    if(broadcastPayload && broadcastPayload.securityCodes && broadcastPayload.securityCodes.length > 0) {
-      currentSecurity = broadcastPayload.securityCodes[0];
+    if(broadcastPayload && broadcastPayload.securities && broadcastPayload.securities.length > 0) {
+      currentSecurity = broadcastPayload.securities[0];
     }
     return currentSecurity;
   }
@@ -40,7 +40,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       event.target.value
     ];
     const updatedBroadcastPayload = currentBroadcastPayload;
-    updatedBroadcastPayload.securityCodes = securities;
+    updatedBroadcastPayload.securities = securities;
 
     // update security
     setSecurity(securities[0]);
