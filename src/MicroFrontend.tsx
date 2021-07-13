@@ -72,13 +72,8 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
   return (
     <>
-      <p>Broadcast payload: {JSON.stringify(broadcastPayload)}</p>
-      <p>Locale in micro frontend: <strong>{locale}</strong></p>
-      <p>
-        Translate in micro frontend "common.control.ok": <strong>{localise("common.control.ok")}</strong>
-      </p>
       <form onSubmit={handleSubmit}>
-        <label>Broadcast Payload:</label>
+        <label>Security Code:</label>
         <br />
         <select value={security} onChange={handleBroadcastPaylodChange} className="form-control">
           <option>Select...</option>
@@ -89,6 +84,21 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
         <br />
         <input type="submit" value="Submit" className="form-control" />
       </form>
+      <hr />
+      <table>
+        <tr>
+          <th align="left">Broadcast Payload</th>
+          <td>{JSON.stringify(broadcastPayload)}</td>
+        </tr>
+        <tr> 
+          <th align="left">Locale</th>
+          <td>{locale}</td>
+        </tr>
+        <tr>
+          <th align="left">Translation of "common.control.ok"</th>
+          <td>{localise("common.control.ok")}</td>
+        </tr>
+      </table>
     </>
   );
 }
