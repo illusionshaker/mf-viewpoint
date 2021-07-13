@@ -11,16 +11,25 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 ) => {
   const { locale, broadcastPayload, elemSelector } = props;
   const [ currentBroadcastPayload, setCurrentBroadcastPayload] = useState(broadcastPayload);
-  const [ security, setSecurity ] = useState("");
   
   // just use the first security for the time being as our POC
   const currentSecurity = () => {
     let currentSecurity: string = "";
-    if(currentBroadcastPayload && currentBroadcastPayload.securities && currentBroadcastPayload.securities.length > 0) {
-      currentSecurity =  currentBroadcastPayload.securities[0];
+    if(currentBroadcastPayload && currentBroadcastPayload.securityCodes && currentBroadcastPayload.securityCodes.length > 0) {
+      currentSecurity = currentBroadcastPayload.securityCodes[0];
     }
     return currentSecurity;
   };
+
+  const broadcastSecurity = () => {
+    let currentSecurity: string = "";
+    if(broadcastPayload && broadcastPayload.securityCodes && broadcastPayload.securityCodes.length > 0) {
+      currentSecurity = broadcastPayload.securityCodes[0];
+    }
+    return currentSecurity;
+  }
+
+  const [ security, setSecurity ] = useState(currentSecurity());
   
   const localise = (localizationKey: string): string => {
     return global?.IressTraderPlus?.UICore?.CultureInfo?.localize ? global.IressTraderPlus.UICore.CultureInfo.localize(localizationKey): localizationKey;
@@ -30,9 +39,12 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
     const securities = [
       event.target.value
     ];
-    setSecurity(event.target.value);
     const updatedBroadcastPayload = currentBroadcastPayload;
-    updatedBroadcastPayload.securities = securities;
+    updatedBroadcastPayload.securityCodes = securities;
+
+    // update security
+    setSecurity(securities[0]);
+    // update broadcast payload to be sent
     setCurrentBroadcastPayload(updatedBroadcastPayload);
   }
 
@@ -54,8 +66,9 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   }
 
   useEffect(() => {
-    setSecurity(currentSecurity());
-  }, [security, currentBroadcastPayload]);
+    // if the broadcast payload has changed update the security value
+    setSecurity(broadcastSecurity());
+  }, [broadcastPayload]);
 
   return (
     <>
