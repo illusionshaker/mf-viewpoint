@@ -1,4 +1,7 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
+import AccountPicker from "./AccountPicker";
+import BroadcastDebug from "./BroadcastDebug";
+import SecurityCodePicker from './SecurityCodePicker';
 
 export interface IMicroFrontendProps {
   locale: string,
@@ -10,6 +13,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   props: IMicroFrontendProps
 ) => {
   const { locale, broadcastPayload, elemSelector } = props;
+  const [ account, setAccount ] = useState()
   const [ currentBroadcastPayload, setCurrentBroadcastPayload] = useState(broadcastPayload);
   
   // just use the first security for the time being as our POC
@@ -27,12 +31,16 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       currentSecurity = broadcastPayload.securities[0];
     }
     return currentSecurity;
-  }
+  };
 
   const [ security, setSecurity ] = useState(currentSecurity());
   
-  const localise = (localizationKey: string): string => {
-    return global?.IressTraderPlus?.UICore?.CultureInfo?.localize ? global.IressTraderPlus.UICore.CultureInfo.localize(localizationKey): localizationKey;
+  const handleAccountChange = (event: React.SyntheticEvent): void => {
+    const account = event.target.value;
+    setAccount(account);
+
+    // do something with the account 
+    console.log("account", account);
   };
 
   const handleBroadcastPaylodChange = (event: React.SyntheticEvent): void => {
@@ -46,9 +54,9 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
     setSecurity(securities[0]);
     // update broadcast payload to be sent
     setCurrentBroadcastPayload(updatedBroadcastPayload);
-  }
+  };
 
-  const handleSubmit = (event: React.SyntheticEvent): void => {
+  const handleBroadcastSubmit = (event: React.SyntheticEvent): void => {
     event.preventDefault();
     const elem = document.querySelector("#app");
     if(elem) {
@@ -63,7 +71,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
       console.log("we need to do something here...", currentBroadcastPayload);
     }
-  }
+  };
 
   useEffect(() => {
     // if the broadcast payload has changed update the security value
@@ -72,34 +80,18 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <p>Hello All</p>
+      <p><strong>Account Picker Example</strong></p>
+      <label>Account:</label>
+      <AccountPicker account={account} handleOnChange={handleAccountChange}></AccountPicker>
+      <hr />
+      <p><strong>Broadcast Security Code Example</strong></p>
+      <form onSubmit={handleBroadcastSubmit}>
         <label>Security Code:</label>
-        <br />
-        <select value={security} onChange={handleBroadcastPaylodChange} className="form-control">
-          <option>Select...</option>
-          <option value="ANZ.ASX">ANZ.ASX</option>
-          <option value="BHP.ASX">BHP.ASX</option>
-          <option value="NAB.ASX">NAB.ASX</option>
-        </select>
+        <SecurityCodePicker security={security} handleOnChange={handleBroadcastPaylodChange}></SecurityCodePicker>
         <br />
         <input type="submit" value="Submit" className="form-control" />
       </form>
-      <hr />
-      <table>
-        <tr>
-          <th align="left">Broadcast Payload</th>
-          <td>{JSON.stringify(broadcastPayload)}</td>
-        </tr>
-        <tr> 
-          <th align="left">Locale</th>
-          <td>{locale}</td>
-        </tr>
-        <tr>
-          <th align="left">Translation of "common.control.ok"</th>
-          <td>{localise("common.control.ok")}</td>
-        </tr>
-      </table>
+      <BroadcastDebug locale={locale} broadcastPayload={broadcastPayload} />
     </>
   );
 }

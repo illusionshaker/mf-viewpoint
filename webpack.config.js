@@ -5,7 +5,7 @@ module.exports = (_, argv) => ({
   output: {
     publicPath:
       argv.mode === "development"
-        ? "http://localhost:9000/"
+        ? "https://localhost:9000/"
         : "https://mf-viewpoint.vercel.app/",
   },
   resolve: {
@@ -13,6 +13,7 @@ module.exports = (_, argv) => ({
   },
   devServer: {
     port: 9000,
+    https: true,
   },
   module: {
     rules: [
