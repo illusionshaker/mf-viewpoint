@@ -26,7 +26,7 @@ const AccountPicker: FunctionComponent<IAccountPickerProps> = (
   const { account, handleOnChange } = props;
   const [ accounts, setAccounts ] = useState(initialAccounts);
 
-  // HACK: POC code - do not do this in any the real implementation
+  // HACK: POC code - do not do this in any real implementation
   // we are caling PickerDataProvier.getRetailPickerItems in ViewPoint to retrieve a list of retail accounts
   const getRetailPickerItems = async () => {
     // data takes awhile to come back .. what happens if there are no accounts?

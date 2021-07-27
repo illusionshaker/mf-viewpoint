@@ -15,7 +15,7 @@ git remote set-url --add --push origin https://github.com/oneiresslab/mf-viewpoi
 
 Notes:
 
-When `npm run start` you may have an issue in Chrome where the browser won't display localhost run the following and site settings > insecure content is set to allow.
+When running `npm run start` you may have an issue in Chrome/Edge which won't display https://localhost:9000/ due to certificate issues. Run the following command to allow insecure localhost and also set site settings > insecure content is set to allow.
 
 ```
 chrome://flags/#allow-insecure-localhost
