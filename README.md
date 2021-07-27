@@ -12,3 +12,11 @@ git remote set-url --add --push origin git@github.com:illusionshaker/mf-viewpoin
 git remote set-url --add --push origin https://github.com/oneiresslab/mf-viewpoint
 
 ```
+
+Notes:
+
+When `npm run start` you may have an issue in Chrome where the browser won't display localhost run the following and site settings > insecure content is set to allow.
+
+```
+chrome://flags/#allow-insecure-localhost
+```
