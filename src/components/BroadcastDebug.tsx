@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { localise } from './Localise';
+import { localise } from './../services/Localise';
 
 export interface IBroadcastDebugProps {
   broadcastPayload: any;

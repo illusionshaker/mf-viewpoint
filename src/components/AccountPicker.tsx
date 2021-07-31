@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
+import { getRetailPickerItems } from "./../services/ViewPointServices";
 
 export interface IAccountPickerProps {
   account?: string;
@@ -22,23 +23,20 @@ export interface IAccount {
 const AccountPicker: FunctionComponent<IAccountPickerProps> = (
   props: IAccountPickerProps
 ) => {
+  const loadingTime = 1000; // accounts take while to load - see RootReducer.ts
   const initialAccounts: [IAccount] = [] as any;
   const { account, handleOnChange } = props;
   const [ accounts, setAccounts ] = useState(initialAccounts);
 
   // HACK: POC code - do not do this in any real implementation
   // we are caling PickerDataProvier.getRetailPickerItems in ViewPoint to retrieve a list of retail accounts
-  const getRetailPickerItems = async () => {
-    // data takes awhile to come back .. what happens if there are no accounts?
-    if(global?.IressTraderPlus?.IocFactory?.container?.resolve && accounts.length === 0) {
-      try {
-        const items = await global.IressTraderPlus.IocFactory.container.resolve("_pickerDataProvider").getRetailPickerItems();
-        setAccounts(items);
+  const getPickerItems = async () => {
+      if(accounts.length as Number === 0) {
+        const items = await getRetailPickerItems();
+        if(items) {
+          setAccounts(items);
+        }
       }
-      catch(e) {
-        console.log("error", e);
-      }
-    }
   };
 
   const options = accounts.map(account => (
@@ -47,7 +45,7 @@ const AccountPicker: FunctionComponent<IAccountPickerProps> = (
 
   useEffect(() => {
     // we need to wait while the data loads
-    getRetailPickerItems();
+    setTimeout(getPickerItems, loadingTime);
   }, [accounts]);
 
   return (

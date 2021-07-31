@@ -1,7 +1,8 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
-import AccountPicker from "./AccountPicker";
-import BroadcastDebug from "./BroadcastDebug";
-import SecurityCodePicker from './SecurityCodePicker';
+import { sendBroadcast } from "./services/Broadcast";
+import { requestSecurityInformation, requestSecurityValidation } from "./services/ViewPointServices";
+import SecurityCodePicker from './components/SecurityCodePicker';
+import SecurityInformation from './components/SecurityInformation';
 
 export interface IMicroFrontendProps {
   locale: string,
@@ -13,7 +14,6 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   props: IMicroFrontendProps
 ) => {
   const { locale, broadcastPayload, elemSelector } = props;
-  const [ account, setAccount ] = useState()
   const [ currentBroadcastPayload, setCurrentBroadcastPayload] = useState(broadcastPayload);
   
   // just use the first security for the time being as our POC
@@ -34,64 +34,54 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   };
 
   const [ security, setSecurity ] = useState(currentSecurity());
+  const [ securityInformation, setSecurityInformation ] = useState({isValid: false});
+
+  const handleSecurityChange = async (securityCode: string) => {
+    if(await requestSecurityValidation(securityCode)) {
+      const securities = [
+        securityCode
+      ];
+      const updatedBroadcastPayload = currentBroadcastPayload;
+      updatedBroadcastPayload.securities = securities;
   
-  const handleAccountChange = (event: React.SyntheticEvent): void => {
-    const account = event.target.value;
-    setAccount(account);
+      // update security
+      setSecurity(securityCode);
+  
+      // load the security information
+      setSecurityInformation(await requestSecurityInformation(securityCode));
+      
+      // update the broadcastPayload
+      setCurrentBroadcastPayload(updatedBroadcastPayload);
 
-    // do something with the account 
-    console.log("account", account);
-  };
-
-  const handleBroadcastPaylodChange = (event: React.SyntheticEvent): void => {
-    const securities = [
-      event.target.value
-    ];
-    const updatedBroadcastPayload = currentBroadcastPayload;
-    updatedBroadcastPayload.securities = securities;
-
-    // update security
-    setSecurity(securities[0]);
-    // update broadcast payload to be sent
-    setCurrentBroadcastPayload(updatedBroadcastPayload);
-  };
-
-  const handleBroadcastSubmit = (event: React.SyntheticEvent): void => {
-    event.preventDefault();
-    const elem = document.querySelector("#app");
-    if(elem) {
-      elem.dispatchEvent(
-        new CustomEvent("mf-broadcast-send", {
-            detail: {
-                elemSelector: `${elemSelector}`, // element we want target
-                payload: currentBroadcastPayload, // broadcast payload
-            },
-        }),
-      );
-
-      console.log("we need to do something here...", currentBroadcastPayload);
+      // send the broadcast
+      sendBroadcast(elemSelector, updatedBroadcastPayload);
     }
   };
 
+  const handleBroadcastChanged = async () => {
+    const security = broadcastSecurity();
+
+    if(await requestSecurityValidation(security)) {
+    
+      // update the security code
+      setSecurity(security);
+
+      // load the security information
+      setSecurityInformation(await requestSecurityInformation(security));
+    }
+  }; 
+
   useEffect(() => {
     // if the broadcast payload has changed update the security value
-    setSecurity(broadcastSecurity());
+    handleBroadcastChanged();
   }, [broadcastPayload]);
 
   return (
     <>
-      <p><strong>Account Picker Example</strong></p>
-      <label>Account:</label>
-      <AccountPicker account={account} handleOnChange={handleAccountChange}></AccountPicker>
-      <hr />
-      <p><strong>Broadcast Security Code Example</strong></p>
-      <form onSubmit={handleBroadcastSubmit}>
-        <label>Security Code:</label>
-        <SecurityCodePicker security={security} handleOnChange={handleBroadcastPaylodChange}></SecurityCodePicker>
-        <br />
-        <input type="submit" value="Submit" className="form-control" />
-      </form>
-      <BroadcastDebug locale={locale} broadcastPayload={broadcastPayload} />
+      <SecurityCodePicker security={security} handleOnChange={handleSecurityChange}></SecurityCodePicker>
+      { securityInformation && securityInformation?.isValid && (
+        <SecurityInformation securityInformation={securityInformation} />
+      )}
     </>
   );
 }
