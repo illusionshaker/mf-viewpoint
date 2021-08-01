@@ -30,15 +30,41 @@ export const requestSecurityInformation = async (securityCode: string) => {
     }
 };
 
-export const generalSearcherSearch = async (searchText: string) => new Promise((resolve) => {
+export const securityInformationGet = async (securityCode: string) => new Promise((resolve) => {
     if(isVPServicesAvailable()) {
         // @ts-ignore
-        let gsc = global.IressTraderPlus.IocFactory.container.resolve("_generalSearcherController");
+        const controller = global.IressTraderPlus.IocFactory.container.resolve("_securityInformationScreenController");
+
+        // generate the input to make the request
+        const input = securityInformationGetInput(securityCode);
+        console.log(input);
+        console.log(controller);
+        controller.securityInformationChanged.add((event: any) => {
+
+            // match the request and the results category
+            // first response seems to come back with a large list of empty results
+            if(
+                input.header.targetID === event.header.targetID &&
+                input.header.requestID === event.header.requestID
+            ) {
+                resolve(event.data.dataRows);
+            }
+        });
+
+        controller.doRequest(input);
+    }
+});
+
+// 
+export const generalSearcherControllerSearch = async (searchText: string) => new Promise((resolve) => {
+    if(isVPServicesAvailable()) {
+        // @ts-ignore
+        const controller = global.IressTraderPlus.IocFactory.container.resolve("_generalSearcherController");
         
         // generate the input to make the request
-        const input = requestInput(searchText);
+        const input = generalSearcherControllerInput(searchText);
 
-        gsc.resultReceived.add((event: any) => {
+        controller.resultReceived.add((event: any) => {
 
             // match the request and the results category
             // first response seems to come back with a large list of empty results
@@ -51,21 +77,34 @@ export const generalSearcherSearch = async (searchText: string) => new Promise((
             }
         });
 
-        gsc.search(input);
+        controller.search(input);
     }
 });
 
 // generated the input data for the search request
-const requestInput = (searchText: string) => {
+const generalSearcherControllerInput = (searchText: string) => {
     if(isVPServicesAvailable()) {
       // @ts-ignore
-      const input = new global.IressTraderPlus.BaseActionInput("_mf_viewpoint");
+      const input = new global.IressTraderPlus.BaseActionInput("_mf_viewpoint_");
       input.data = {
         categories: [4],
         deferMode: true,
         maxRowCount: 15,
         searchOnEmpty: false,
         text: searchText,
+      };
+
+      return input;
+    }
+};
+
+// generated the input data for the search request
+const securityInformationGetInput = (securityFullCode: string) => {
+    if(isVPServicesAvailable()) {
+      // @ts-ignore
+      const input = new global.IressTraderPlus.BaseActionInput("_mf_viewpoint_");
+      input.data = {
+        securityFullCode: securityFullCode
       };
 
       return input;

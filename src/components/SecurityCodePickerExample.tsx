@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { generalSearcherSearch } from '../services/ViewPointServices';
+import { generalSearcherControllerSearch } from '../services/ViewPointServices';
 
 export interface ISecurityCodePickerProps {
   handleOnChange: (event: React.SyntheticEvent) => void;
@@ -26,7 +26,7 @@ const SecurityCodePicker: FunctionComponent<ISecurityCodePickerProps> = (
     setSearchText(searchText);
 
     // auto complete search based on the text
-    const searchResult = await generalSearcherSearch(searchText) as any;
+    const searchResult = await generalSearcherControllerSearch(searchText) as any;
     setResults(searchResult);
   };
 

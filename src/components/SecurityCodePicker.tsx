@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import AsyncSelect from "react-select/async";
-import { generalSearcherSearch } from './../services/ViewPointServices';
+import { generalSearcherControllerSearch } from './../services/ViewPointServices';
 
 export interface ISecurityCodePickerProps {
   handleOnChange: (event: React.SyntheticEvent) => void;
@@ -18,7 +18,7 @@ const SecurityCodePicker: FunctionComponent<ISecurityCodePickerProps> = (
   };
 
   const handleLoadOptions = async () => {
-    const results: any = await generalSearcherSearch(searchText);
+    const results: any = await generalSearcherControllerSearch(searchText);
     const categories = results.map((categories: any) => categories.results);
     const options = categories.map((category: any) => category.map((result: any) => (
       { value: result.watchlistCode, label: result.watchlistCode }
@@ -31,16 +31,6 @@ const SecurityCodePicker: FunctionComponent<ISecurityCodePickerProps> = (
       handleOnChange(selectedOption.value)
     }
   }
-
-  const handleOnSuggestionSelected = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-
-    // update the search text
-    setSearchText( event.target.value);
-
-    // event handler in parent
-    handleOnChange(event);
-  };
 
   useEffect(() => {
     setSearchText(security);
@@ -55,6 +45,8 @@ const SecurityCodePicker: FunctionComponent<ISecurityCodePickerProps> = (
         isClearable={true}
         onChange={handleOnSelectChange}
         onInputChange={handleOnSearchTextChange}
+        className="mf-security-code-picker"
+        classNamePrefix="mf-security-code-picker"
       />
     </>
   );

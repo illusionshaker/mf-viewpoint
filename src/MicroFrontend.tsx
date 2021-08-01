@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
 import { sendBroadcast } from "./services/Broadcast";
-import { requestSecurityInformation, requestSecurityValidation } from "./services/ViewPointServices";
+import { requestSecurityInformation, requestSecurityValidation, securityInformationGet } from "./services/ViewPointServices";
 import SecurityCodePicker from './components/SecurityCodePicker';
 import SecurityInformation from './components/SecurityInformation';
 
@@ -49,6 +49,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   
       // load the security information
       setSecurityInformation(await requestSecurityInformation(securityCode));
+      // setSecurityInformation(await securityInformationGet(securityCode));
       
       // update the broadcastPayload
       setCurrentBroadcastPayload(updatedBroadcastPayload);
@@ -68,6 +69,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
       // load the security information
       setSecurityInformation(await requestSecurityInformation(security));
+      // setSecurityInformation(await securityInformationGet(security));
     }
   }; 
 
