@@ -35,7 +35,10 @@ export const securityInformationGet = async (widget: string, securityCode: strin
     if(isVPServicesAvailable()) {
         // @ts-ignore
         const results = await global?.mfviewpoint[widget]?.securityInformationGetDoRequest(securityCode);
-        return results.data.information;
+
+        if(results?.data?.information) {
+            return results.data.information;
+        }
     }
 };
 
