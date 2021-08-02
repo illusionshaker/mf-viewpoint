@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
 import { sendBroadcast } from "./services/Broadcast";
-import { requestSecurityInformation, requestSecurityValidation, securityInformationGet } from "./services/ViewPointServices";
+import { requestSecurityValidation, securityInformationGet } from "./services/ViewPointServices";
 import SecurityCodePicker from './components/SecurityCodePicker';
 import SecurityInformation from './components/SecurityInformation';
 
@@ -13,7 +13,7 @@ export interface IMicroFrontendProps {
 const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   props: IMicroFrontendProps
 ) => {
-  const { locale, broadcastPayload, elemSelector } = props;
+  const { broadcastPayload, elemSelector } = props;
   const [ currentBroadcastPayload, setCurrentBroadcastPayload] = useState(broadcastPayload);
   
   // just use the first security for the time being as our POC
@@ -34,7 +34,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   };
 
   const [ security, setSecurity ] = useState(currentSecurity());
-  const [ securityInformation, setSecurityInformation ] = useState({isValid: false});
+  const [ securityInformation, setSecurityInformation ] = useState([]);
 
   const handleSecurityChange = async (securityCode: string) => {
     if(await requestSecurityValidation(securityCode)) {
@@ -48,8 +48,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       setSecurity(securityCode);
   
       // load the security information
-      setSecurityInformation(await requestSecurityInformation(securityCode));
-      // setSecurityInformation(await securityInformationGet(securityCode));
+      setSecurityInformation(await securityInformationGet(elemSelector, securityCode));
       
       // update the broadcastPayload
       setCurrentBroadcastPayload(updatedBroadcastPayload);
@@ -68,8 +67,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       setSecurity(security);
 
       // load the security information
-      setSecurityInformation(await requestSecurityInformation(security));
-      // setSecurityInformation(await securityInformationGet(security));
+      setSecurityInformation(await securityInformationGet(elemSelector, security));
     }
   }; 
 
@@ -80,8 +78,9 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
   return (
     <>
+      
       <SecurityCodePicker security={security} handleOnChange={handleSecurityChange}></SecurityCodePicker>
-      { securityInformation && securityInformation?.isValid && (
+      { securityInformation && securityInformation.length > 0 && (
         <SecurityInformation securityInformation={securityInformation} />
       )}
     </>
