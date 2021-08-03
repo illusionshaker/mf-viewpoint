@@ -35,8 +35,8 @@ const SecurityInformation: FunctionComponent<ISecurityInformationProps> = (
     gicsIndustry,
     gicsSubIndustry,
     lotSize,
-  } = securityInformation[0];
-  const securityYeild = securityInformation[0].yeild;
+  } = securityInformation;
+  const securityYeild = securityInformation.yeild;
   return (
     <div className={className}>
       <dl>

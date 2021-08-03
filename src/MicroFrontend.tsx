@@ -93,6 +93,8 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
     }
   };
 
+  // there's some logic that combines security information and quote 
+  // munge them together for the timebeing...
   const combinedData = () => ({...securityInformation[0] as any, ...quotes[0] as any});
 
   useEffect(() => {
@@ -114,7 +116,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       {securityInformation && securityInformation.length > 0 && (
         <SecurityInformation
           className="micro-frontend__list-container"
-          securityInformation={securityInformation}
+          securityInformation={combinedData()}
         />
       )}
     </>
