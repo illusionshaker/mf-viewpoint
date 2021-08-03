@@ -42,6 +42,17 @@ export const securityInformationGet = async (widget: string, securityCode: strin
     }
 };
 
+// this is an updating request / listener
+export const quoteDoRequest = (widget: string, securityCode: string, quoteCallback: any) => {
+    if(isVPServicesAvailable()) {
+
+        const callback = (event: any) => quoteReceivedCallback(event, quoteCallback);
+
+        // @ts-ignore
+        global?.mfviewpoint[widget]?.quoteDoRequest(securityCode, callback);
+    }
+};
+
 // generalSearcherController.search()
 export const generalSearcherControllerSearch = async (searchText: string) => new Promise((resolve) => {
     if(isVPServicesAvailable()) {
@@ -82,5 +93,11 @@ const generalSearcherControllerInput = (searchText: string) => {
         };
 
         return input;
+    }
+};
+
+const quoteReceivedCallback = (event: any, quoteCallback: any) => {
+    if(event?.data?.quotes) {
+        quoteCallback(event.data.quotes); 
     }
 };

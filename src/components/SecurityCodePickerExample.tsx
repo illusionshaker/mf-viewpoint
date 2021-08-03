@@ -6,7 +6,7 @@ export interface ISecurityCodePickerProps {
   security: string;
 }
 
-const SecurityCodePicker: FunctionComponent<ISecurityCodePickerProps> = (
+const SecurityCodePickerExample: FunctionComponent<ISecurityCodePickerProps> = (
   props: ISecurityCodePickerProps
 ) => {
   const initialResults: [any] = [] as any;
@@ -55,4 +55,4 @@ const SecurityCodePicker: FunctionComponent<ISecurityCodePickerProps> = (
   );
 }
 
-export default SecurityCodePicker;
+export default SecurityCodePickerExample;

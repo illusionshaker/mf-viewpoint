@@ -1,11 +1,13 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { sendBroadcast } from "./services/Broadcast";
 import {
+  quoteDoRequest,
   requestSecurityValidation,
   securityInformationGet,
 } from "./services/ViewPointServices";
 import SecurityCodePicker from "./components/SecurityCodePicker";
 import SecurityInformation from "./components/SecurityInformation";
+import QuoteData from './components/QuoteData';
 
 export interface IMicroFrontendProps {
   locale: string;
@@ -47,6 +49,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
   const [security, setSecurity] = useState(currentSecurity());
   const [securityInformation, setSecurityInformation] = useState([]);
+  const [quotes, setQuotes] = useState([]);
 
   const handleSecurityChange = async (securityCode: string) => {
     if (await requestSecurityValidation(securityCode)) {
@@ -62,6 +65,9 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
         await securityInformationGet(elemSelector, securityCode)
       );
 
+      // load the quote information
+      quoteDoRequest(elemSelector, securityCode, setQuotes);
+
       // update the broadcastPayload
       setCurrentBroadcastPayload(updatedBroadcastPayload);
 
@@ -71,11 +77,14 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   };
 
   const handleBroadcastChanged = async () => {
-    const security = broadcastSecurity();
+    const securityCode = broadcastSecurity();
 
     if (await requestSecurityValidation(security)) {
       // update the security code
-      setSecurity(security);
+      setSecurity(securityCode);
+
+      // load the quote information
+      quoteDoRequest(elemSelector, securityCode, setQuotes);
 
       // load the security information
       setSecurityInformation(
@@ -83,6 +92,8 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       );
     }
   };
+
+  const combinedData = () => ({...securityInformation[0] as any, ...quotes[0] as any});
 
   useEffect(() => {
     // if the broadcast payload has changed update the security value
@@ -95,6 +106,11 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
         security={security}
         handleOnChange={handleSecurityChange}
       ></SecurityCodePicker>
+      {quotes && quotes.length > 0 && (
+        <QuoteData 
+          quote={combinedData()} 
+        />
+      )}
       {securityInformation && securityInformation.length > 0 && (
         <SecurityInformation
           className="micro-frontend__list-container"
