@@ -81,7 +81,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       
       <SecurityCodePicker security={security} handleOnChange={handleSecurityChange}></SecurityCodePicker>
       { securityInformation && securityInformation.length > 0 && (
-        <SecurityInformation securityInformation={securityInformation} />
+        <SecurityInformation className="micro-frontend__table" securityInformation={securityInformation} />
       )}
     </>
   );

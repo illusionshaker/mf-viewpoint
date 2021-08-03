@@ -3,12 +3,13 @@ import { localise } from '../services/Localise';
 
 export interface ISecurityInformationProps {
     securityInformation: any;
+    className: string;
 }
 
 const SecurityInformation: FunctionComponent<ISecurityInformationProps> = (
   props: ISecurityInformationProps
 ) => {
-    const { securityInformation } = props;
+    const { securityInformation, className } = props;
 
     const localisationKey = (key: string) => `column.${key}`;
     
@@ -21,11 +22,13 @@ const SecurityInformation: FunctionComponent<ISecurityInformationProps> = (
     ));
   
     return (
-        <table>
-            <tbody>
-                {rows}
-            </tbody>
-        </table>
+        <div className={className}>
+            <table>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+        </div>
     );
 }
 
