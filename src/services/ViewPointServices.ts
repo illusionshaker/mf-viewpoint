@@ -53,6 +53,21 @@ export const quoteDoRequest = (widget: string, securityCode: string, quoteCallba
     }
 };
 
+// TODO: generating requests for quote results in "Message targetID / controller targetID mismatch" error
+export const quoteRequest = (targetID: string, securityCode: string, quoteCallback: any) => {
+    if(isVPServicesAvailable()) {
+        // @ts-ignore
+        const controller = global.IressTraderPlus.IocFactory.container.resolve("_quoteScreenController");
+
+        // generate the input to make the request
+        const input = quoteInput(targetID, securityCode);
+
+        controller.quotesChanged.add((event: any) => quoteReceivedCallback(event, quoteCallback));
+
+        controller.doRequest(input);
+    }
+};
+
 // generalSearcherController.search()
 export const generalSearcherControllerSearch = async (searchText: string) => new Promise((resolve) => {
     if(isVPServicesAvailable()) {
@@ -95,6 +110,47 @@ const generalSearcherControllerInput = (searchText: string) => {
         return input;
     }
 };
+
+const quoteInput = (targetID: string, securityFullCode: string) => {
+    const columns = [
+        "securityCode",
+        "exchange",
+        "issuerName",
+        "quotedSecurityIndicator",
+        "subIndustryDescription",
+        "securityType",
+        "industryGroupDescription",
+        "firstListedDate",
+        "quotedSharesOnIssue",
+        "marketCapitalisation",
+        "earningsPerShare",
+        "yearlyDividend",
+        "netAssetBacking",
+        "earningsPerShare",
+        "currencyCode",
+        "isin",
+        "lastListedDate",
+        "suspensionDate",
+        "movement",
+        "movementPercent",
+        "lastPrice",
+        "calcDivYearly",
+    ];
+
+    if(isVPServicesAvailable()) {
+        // @ts-ignore
+        const input = new global.IressTraderPlus.Market.QuoteScreenActionMessages.DoRequestInput(
+            // @ts-ignore
+            new global.IressTraderPlus.BaseActionInputHeader(targetID),
+            {
+                securityFullCode: [securityFullCode],
+                columns: columns,
+            },
+        );
+
+        return input;
+    }
+}
 
 const quoteReceivedCallback = (event: any, quoteCallback: any) => {
     if(event?.data?.quotes) {

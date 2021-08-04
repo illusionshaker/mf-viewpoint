@@ -2,8 +2,8 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import { sendBroadcast } from "./services/Broadcast";
 import {
   quoteDoRequest,
+  requestSecurityInformation,
   requestSecurityValidation,
-  securityInformationGet,
 } from "./services/ViewPointServices";
 import SecurityCodePicker from "./components/SecurityCodePicker";
 import SecurityInformation from "./components/SecurityInformation";
@@ -48,7 +48,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   };
 
   const [security, setSecurity] = useState(currentSecurity());
-  const [securityInformation, setSecurityInformation] = useState([]);
+  const [securityInformation, setSecurityInformation] = useState({isValid: false});
   const [quotes, setQuotes] = useState([]);
 
   const handleSecurityChange = async (securityCode: string) => {
@@ -62,7 +62,8 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
       // load the security information
       setSecurityInformation(
-        await securityInformationGet(elemSelector, securityCode)
+        // await securityInformationGet(elemSelector, securityCode)
+        await requestSecurityInformation(securityCode)
       );
 
       // load the quote information
@@ -88,14 +89,14 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
 
       // load the security information
       setSecurityInformation(
-        await securityInformationGet(elemSelector, security)
+        await requestSecurityInformation(securityCode)
       );
     }
   };
 
   // there's some logic that combines security information and quote 
   // munge them together for the timebeing...
-  const combinedData = () => ({...securityInformation[0] as any, ...quotes[0] as any});
+  const combinedData = () => ({...securityInformation as any, ...quotes[0] as any});
 
   useEffect(() => {
     // if the broadcast payload has changed update the security value
@@ -113,7 +114,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
           quote={combinedData()} 
         />
       )}
-      {securityInformation && securityInformation.length > 0 && (
+      {securityInformation && securityInformation.isValid && (
         <SecurityInformation
           className="micro-frontend__list-container"
           securityInformation={combinedData()}
