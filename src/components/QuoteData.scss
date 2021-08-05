@@ -1,0 +1,57 @@
+// copied the original styles for now
+.desc-movement-wrapper {
+    display: table;
+    position: relative;
+    margin: 10px 0 0 10px;
+    padding-bottom: 10px;
+
+    .security-description-fields {
+        display: table-cell;
+        text-align: left;
+        margin-bottom: 5px;
+
+        .security-description {
+            text-align: left;
+        }
+
+        .sub-industry, .security-type {
+            line-height: 1.5em;
+        }
+    }
+
+    .flex-wrapper {
+        position: relative;
+        display: table-cell;
+        vertical-align: top;
+        padding-left: 6px;
+        right: 0;
+        top: 0;
+
+        .direction-price {
+            display: block;
+        }
+        
+        div {
+            display: inline-block;
+        }
+    }
+
+    .fa {
+        font-size: 18px;
+        margin-right: 4px;
+        margin-top: 6px;
+    }
+
+    .last-price-down {
+        color: #ef504b;
+    }
+
+    .last-price-neutral {
+        color: #babcbe;
+    }
+
+    .last-price-up {
+        color: #8bc540;
+    }
+}
+
