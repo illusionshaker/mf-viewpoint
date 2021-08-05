@@ -67,7 +67,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       );
 
       // load the quote information
-      quoteDoRequest(elemSelector, securityCode, setQuotes);
+      quoteDoRequest(securityCode, setQuotes);
 
       // update the broadcastPayload
       setCurrentBroadcastPayload(updatedBroadcastPayload);
@@ -85,7 +85,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       setSecurity(securityCode);
 
       // load the quote information
-      quoteDoRequest(elemSelector, securityCode, setQuotes);
+      quoteDoRequest(securityCode, setQuotes);
 
       // load the security information
       setSecurityInformation(

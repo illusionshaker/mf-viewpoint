@@ -30,37 +30,16 @@ export const requestSecurityInformation = async (securityCode: string) => {
     }
 };
 
-// securityInformationGet API
-export const securityInformationGet = async (widget: string, securityCode: string) => {
-    if(isVPServicesAvailable()) {
-        // @ts-ignore
-        const results = await global?.mfviewpoint[widget]?.securityInformationGetDoRequest(securityCode);
-
-        if(results?.data?.information) {
-            return results.data.information;
-        }
-    }
-};
-
-// this is an updating request / listener
-export const quoteDoRequest = (widget: string, securityCode: string, quoteCallback: any) => {
-    if(isVPServicesAvailable()) {
-
-        const callback = (event: any) => quoteReceivedCallback(event, quoteCallback);
-
-        // @ts-ignore
-        global?.mfviewpoint[widget]?.quoteDoRequest(securityCode, callback);
-    }
-};
-
-// TODO: generating requests for quote results in "Message targetID / controller targetID mismatch" error
-export const quoteRequest = (targetID: string, securityCode: string, quoteCallback: any) => {
+export const quoteDoRequest = (securityCode: string, quoteCallback: any) => {
     if(isVPServicesAvailable()) {
         // @ts-ignore
         const controller = global.IressTraderPlus.IocFactory.container.resolve("_quoteScreenController");
 
+        // @ts-ignore
+        controller.clear(new global.IressTraderPlus.BaseActionInput(controller.targetID));
+
         // generate the input to make the request
-        const input = quoteInput(targetID, securityCode);
+        const input = quoteInput(controller.targetID, securityCode);
 
         controller.quotesChanged.add((event: any) => quoteReceivedCallback(event, quoteCallback));
 
@@ -75,7 +54,7 @@ export const generalSearcherControllerSearch = async (searchText: string) => new
         const controller = global.IressTraderPlus.IocFactory.container.resolve("_generalSearcherController");
 
         // generate the input to make the request
-        const input = generalSearcherControllerInput(searchText);
+        const input = generalSearcherControllerInput(controller.targetID, searchText);
 
         controller.resultReceived.add((event: any) => {
 
@@ -95,10 +74,10 @@ export const generalSearcherControllerSearch = async (searchText: string) => new
 });
 
 // generated the input data for the search request
-const generalSearcherControllerInput = (searchText: string) => {
+const generalSearcherControllerInput = (targetID: string, searchText: string) => {
     if(isVPServicesAvailable()) {
         // @ts-ignore
-        const input = new global.IressTraderPlus.BaseActionInput("_mf_viewpoint_");
+        const input = new global.IressTraderPlus.BaseActionInput(targetID);
         input.data = {
             categories: [4],
             deferMode: true,
