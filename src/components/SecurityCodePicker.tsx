@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import AsyncSelect from "react-select/async";
-import { generalSearcherControllerSearch } from './../services/ViewPointServices';
+import { generalSearcherControllerSearch } from '../services/ViewPointServices';
 
 export interface ISecurityCodePickerProps {
   handleOnChange: (event: React.SyntheticEvent) => void;

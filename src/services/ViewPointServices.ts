@@ -30,13 +30,13 @@ export const requestSecurityInformation = async (securityCode: string) => {
     }
 };
 
-export const quoteDoRequest = (securityCode: string, quoteCallback: any) => {
+export const quoteDoRequest = (securityCode: string, quoteCallback: any, targetID: string) => {
     if(isVPServicesAvailable()) {
         // @ts-ignore
         const controller = global.IressTraderPlus.IocFactory.container.resolve("_quoteScreenController");
 
         // @ts-ignore
-        controller.clear(new global.IressTraderPlus.BaseActionInput(controller.targetID));
+        controller.clear(new global.IressTraderPlus.BaseActionInput(targetID !== "" ? targetID : controller.targetID));
 
         // generate the input to make the request
         const input = quoteInput(controller.targetID, securityCode);
@@ -44,6 +44,8 @@ export const quoteDoRequest = (securityCode: string, quoteCallback: any) => {
         controller.quotesChanged.add((event: any) => quoteReceivedCallback(event, quoteCallback));
 
         controller.doRequest(input);
+
+        return controller.targetID;
     }
 };
 

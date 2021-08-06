@@ -50,6 +50,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
   const [security, setSecurity] = useState(currentSecurity());
   const [securityInformation, setSecurityInformation] = useState({isValid: false});
   const [quotes, setQuotes] = useState([]);
+  const [quoteTargetID, setQuoteTargetID] = useState("");
 
   const handleSecurityChange = async (securityCode: string) => {
     if (await requestSecurityValidation(securityCode)) {
@@ -67,7 +68,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       );
 
       // load the quote information
-      quoteDoRequest(securityCode, setQuotes);
+      setQuoteTargetID(quoteDoRequest(securityCode, setQuotes, quoteTargetID));
 
       // update the broadcastPayload
       setCurrentBroadcastPayload(updatedBroadcastPayload);
@@ -85,7 +86,7 @@ const MicroFrontend: FunctionComponent<IMicroFrontendProps> = (
       setSecurity(securityCode);
 
       // load the quote information
-      quoteDoRequest(securityCode, setQuotes);
+      setQuoteTargetID(quoteDoRequest(securityCode, setQuotes, quoteTargetID));
 
       // load the security information
       setSecurityInformation(
